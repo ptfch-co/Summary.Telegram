@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Core.Workflows\Core.Workflows.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="WTelegramClient" Version="4.4.8" />
+  </ItemGroup>
+
 </Project>

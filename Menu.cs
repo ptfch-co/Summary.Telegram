@@ -24,9 +24,7 @@ namespace Summary.Telegram
                 {
                     settings.Add(_localizer["تلگرام"], _localizer["تلگرام"], itemBuilder =>
                     {
-                        itemBuilder.Action("Index", "Admin", new { area = "Core.Settings", groupId = "Telegram" })
-                            .Permission(Permissions.ManageTelegramSettings)
-                            .LocalNav();
+                        itemBuilder.Action("Index", "Admin", new { area = "Core.Settings", groupId = "Telegram" }).LocalNav();
                     });
                 });
             });

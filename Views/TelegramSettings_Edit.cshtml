@@ -1,10 +1,71 @@
 @model Summary.Telegram.Settings.TelegramSettings
 
+<input type="hidden" asp-for="Phone_Hash_Code" />
+<input type="hidden" asp-for="User_Id" />
+
 <div class="row">
-    <div class="col-md-6">
-        <div class="form-group">
-            <label asp-for="Token">توکن ربات:</label>
-            <input class="form-control" type="text" asp-for="Token" />
-        </div>
+  <div class="col-md-3">
+    <div class="form-group" asp-validation-class-for="Token">
+      <label asp-for="Token">
+        توکن بات
+      </label>
+      <input type="text" asp-for="Token" class="form-control" />
+      <span class="hint">
+        توکن مربوط به بات تلگرام را در این فیلد وارد کنید.
+      </span>
     </div>
+  </div>
+  <div class="col-md-3">
+    <div class="form-group" asp-validation-class-for="Mobile">
+      <label asp-for="Mobile">
+        شماره موبایل
+      </label>
+      <input type="text" asp-for="Mobile" class="form-control" />
+      <span class="hint">
+        شماره موبایلی که برای اتصال و احراز هویت حساب تلگرام استفاده می‌شود.
+        مثال: 989121234567+
+      </span>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="form-group" asp-validation-class-for="Api_Id">
+      <label asp-for="Api_Id">
+        API ID
+      </label>
+      <input type="text" asp-for="Api_Id" class="form-control" />
+      <span class="hint">
+        شناسه API برنامه تلگرام که از my.telegram.org دریافت می‌شود.
+      </span>
+    </div>
+    <div class="form-group" asp-validation-class-for="Api_Hash">
+      <label asp-for="Api_Hash">
+        API Hash
+      </label>
+      <input type="text" asp-for="Api_Hash" class="form-control" />
+      <span class="hint">
+        کلید API مربوط به برنامه تلگرام که همراه API ID دریافت می‌شود.
+      </span>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="form-group">
+      <label asp-for="Login_Code">
+        کد ورود به سیستم
+      </label>
+      <input type="text" asp-for="Login_Code" class="form-control" />
+      <span class="hint">
+        در این فیلد کدی که از طریق تلگرام برای شما ارسال شده است درج نمایید.
+      </span>
+    </div>
+    <div class="form-group">
+      <label>
+        شناسه کاربری
+      </label>
+      <input type="text" value="@Model.User_Id" disabled class="form-control" />
+      <span class="hint">
+        بعد از مقداردهی فیلد «کد ورود به سیستم» و ثبت فرم، شناسه کاربری شما در تلگرام در این فیلد نمایش داده خواهد شد. پر شدن این فیلد 
+        بدین معنی است که اتصال حساب تلگرام شما با سامری با موفقیت انجام شده است.
+      </span>
+    </div>
+  </div>
 </div>
