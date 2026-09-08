@@ -1,7 +1,10 @@
 @model Summary.Telegram.Settings.TelegramSettings
 
+<input type="hidden" asp-for="Phone_Hash_Code" />
+<input type="hidden" asp-for="User_Id" />
+
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-3">
     <div class="form-group" asp-validation-class-for="Token">
       <label asp-for="Token">
         توکن بات
@@ -41,6 +44,27 @@
       <input type="text" asp-for="Api_Hash" class="form-control" />
       <span class="hint">
         کلید API مربوط به برنامه تلگرام که همراه API ID دریافت می‌شود.
+      </span>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="form-group">
+      <label asp-for="Login_Code">
+        کد ورود به سیستم
+      </label>
+      <input type="text" asp-for="Login_Code" class="form-control" />
+      <span class="hint">
+        در این فیلد کدی که از طریق تلگرام برای شما ارسال شده است درج نمایید.
+      </span>
+    </div>
+    <div class="form-group">
+      <label>
+        شناسه کاربری
+      </label>
+      <input type="text" value="@Model.User_Id" disabled class="form-control" />
+      <span class="hint">
+        بعد از مقداردهی فیلد «کد ورود به سیستم» و ثبت فرم، شناسه کاربری شما در تلگرام در این فیلد نمایش داده خواهد شد. پر شدن این فیلد 
+        بدین معنی است که اتصال حساب تلگرام شما با سامری با موفقیت انجام شده است.
       </span>
     </div>
   </div>

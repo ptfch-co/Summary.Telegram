@@ -18,8 +18,11 @@ namespace Summary.Telegram.Settings
     {
         public string Token { get; set; }
         public string Mobile { get; set; }
-        public string Api_Id { get; set; }
+        public int? Api_Id { get; set; }
         public string Api_Hash { get; set; }
+        public string Login_Code { get; set; }
+        public string Phone_Hash_Code { get; set; }
+        public long? User_Id { get; set; }
     }
 
     public class TelegramSettingsDisplayDriver : SectionDisplayDriver<ISite,
@@ -29,19 +32,19 @@ namespace Summary.Telegram.Settings
         private readonly ShellSettings _shell;
         private readonly IHttpContextAccessor _httpAccessor;
         private readonly IAuthorizationService _authorize;
-        private readonly IAuthorizeService _auth;
+        private readonly ITelegramClientService _client;
 
         public TelegramSettingsDisplayDriver(IShellHost host,
             ShellSettings settings,
             IHttpContextAccessor httpContext,
             IAuthorizationService authorize,
-            IAuthorizeService auth)
+            ITelegramClientService client)
         {
             _host = host;
             _shell = settings;
             _httpAccessor = httpContext;
             _authorize = authorize;
-            _auth = auth;
+            _client = client;
         }
 
         public override async Task<IDisplayResult> EditAsync(TelegramSettings settings,
@@ -59,6 +62,9 @@ namespace Summary.Telegram.Settings
                 model.Mobile = settings.Mobile;
                 model.Api_Id = settings.Api_Id;
                 model.Api_Hash = settings.Api_Hash;
+                model.Login_Code = settings.Login_Code;
+                model.Phone_Hash_Code = settings.Phone_Hash_Code;
+                model.User_Id = settings.User_Id;
             });
             return init.Location("Content:5").OnGroup("Telegram");
         }
@@ -74,11 +80,18 @@ namespace Summary.Telegram.Settings
             if (context.GroupId == "Telegram")
             {
                 await context.Updater.TryUpdateModelAsync(settings, Prefix);
-                await _host.ReloadShellContextAsync(_shell);
 
-                if (string.IsNullOrWhiteSpace(settings.Api_Hash) is false)
-                    if (await _auth.IsLoggedInAsync() is false)
-                        await _auth.SendCodeAsync();
+                if (string.IsNullOrWhiteSpace(settings.Login_Code) && settings.Api_Id.HasValue)
+                {
+                    settings.User_Id = null;
+                    settings.Phone_Hash_Code = await _client.SendCodeAsync(settings.Api_Id.Value, settings.Api_Hash, settings.Mobile);
+                }
+                else if (await _client.IsLoggedInAsync() is false)
+                {
+                    settings.User_Id =  await _client.SignInAsync(settings.Login_Code);
+                }
+
+                await _host.ReloadShellContextAsync(_shell);
             }
 
             return await EditAsync(settings, context);
@@ -104,6 +117,9 @@ namespace Summary.Telegram.Settings
             options.Mobile = settings.Mobile;
             options.Api_Id = settings.Api_Id;
             options.Api_Hash = settings.Api_Hash;
+            options.Login_Code = settings.Login_Code;
+            options.Phone_Hash_Code = settings.Phone_Hash_Code;
+            options.User_Id = settings.User_Id;
         }
     }
 }

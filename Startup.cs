@@ -14,10 +14,8 @@ namespace Summary.Telegram
     {
         public override void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IAuthorizeService, AuthorizeService>();
             services.AddScoped<INavigationProvider, Menu>();
             services.AddScoped<IDisplayDriver<ISite>, TelegramSettingsDisplayDriver>();
-            services.AddScoped<IAuthorizeService, AuthorizeService>();
 
             services.AddSingleton<ITelegramClientService, TelegramClientService>();
 
